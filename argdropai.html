@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArgDropAI - Dropshipping Argentina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #1e1e2e; color: white; }
+        .nav-link { color: #00ff9d !important; }
+        .nav-link.active { background: #00ff9d; color: #1e1e2e !important; font-weight: bold; }
+        .table { --bs-table-bg: #2a2a3d; color: white; }
+        .card { background: #2a2a3d; }
+        .alert { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 9999; }
+    </style>
+</head>
+<body class="p-3">
+    <div class="container">
+        <h1 class="text-center mb-4 text-success">ArgDropAI</h1>
+        <p class="text-center mb-4">🚀 Nueva versión 2026 • 4 proxies automáticos • Mercado Argentino</p>
+
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <li class="nav-item"><a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home">🏠 Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" id="buscar-tab" data-bs-toggle="tab" href="#buscar">🔎 Buscar</a></li>
+            <li class="nav-item"><a class="nav-link" id="volumen-tab" data-bs-toggle="tab" href="#volumen">📊 Volúmenes</a></li>
+            <li class="nav-item"><a class="nav-link" id="validar-tab" data-bs-toggle="tab" href="#validar">✅ Validar</a></li>
+            <li class="nav-item"><a class="nav-link" id="mercado-tab" data-bs-toggle="tab" href="#mercado">🇦🇷 Mercado</a></li>
+            <li class="nav-item"><a class="nav-link" id="proveedores-tab" data-bs-toggle="tab" href="#proveedores">🛒 Proveedores</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="home">
+                <div class="text-center py-5">
+                    <h2 class="text-success">¡Versión mejorada!</h2>
+                    <p class="lead">4 proxies automáticos. Si uno falla, prueba el siguiente.</p>
+                    <p>Probá en WiFi primero. Los agentes ya están listos para buscar productos ganadores.</p>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="buscar">
+                <h5>🔎 Agente Buscador de Productos</h5>
+                <div class="input-group mb-3">
+                    <input type="text" id="buscar-input" class="form-control" placeholder="Ej: auriculares bluetooth">
+                    <button class="btn btn-success" onclick="buscarProductos()">Buscar en MLA</button>
+                </div>
+                <table class="table table-hover" id="tabla-buscar">
+                    <thead><tr><th>Producto</th><th>Precio</th><th>Vendidos</th><th>Acción</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="volumen">
+                <h5>📊 Agente Volúmenes de Ventas</h5>
+                <div class="input-group mb-3">
+                    <input type="text" id="volumen-input" class="form-control" placeholder="Ej: celular">
+                    <button class="btn btn-success" onclick="verVolumenes()">Ver volúmenes</button>
+                </div>
+                <table class="table table-hover" id="tabla-volumen">
+                    <thead><tr><th>Producto</th><th>Vendidos</th><th>Precio</th><th>Acción</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="validar">
+                <h5>✅ Agente Validador de Producto</h5>
+                <div class="input-group mb-3">
+                    <input type="text" id="id-input" class="form-control" placeholder="MLA123456789">
+                    <button class="btn btn-success" onclick="validarProducto()">Validar + Reseñas</button>
+                </div>
+                <div id="resultado-validar" class="card p-3"></div>
+            </div>
+
+            <div class="tab-pane fade" id="mercado">
+                <h5>🇦🇷 Agente Analizador de Mercado</h5>
+                <div class="input-group mb-3">
+                    <input type="text" id="mercado-input" class="form-control" placeholder="Ej: moda, hogar, celulares">
+                    <button class="btn btn-success" onclick="analizarMercado()">Analizar</button>
+                </div>
+                <pre id="resultado-mercado" class="bg-dark p-3 text-light" style="white-space: pre-wrap;"></pre>
+            </div>
+
+            <div class="tab-pane fade" id="proveedores">
+                <h5>🛒 Proveedores Verificados Argentina</h5>
+                <div class="row" id="lista-proveedores"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function fetchMLA(endpoint) {
+            const fullUrl = 'https://api.mercadolibre.com' + endpoint;
+            const proxyBuilders = [
+                (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,           // Proxy #1 (más estable 2026)
+                (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, // Proxy #2
+                (url) => `https://thingproxy.freeboard.io/fetch/${url}`,             // Proxy #3
+                (url) => `https://test.cors.workers.dev/${url}`                      // Proxy #4 (Cloudflare)
+            ];
+
+            for (let i = 0; i < proxyBuilders.length; i++) {
+                try {
+                    const proxyUrl = proxyBuilders[i](fullUrl);
+                    const res = await fetch(proxyUrl, { method: 'GET' });
+                    if (!res.ok) throw new Error('HTTP error');
+                    const data = await res.json();
+                    console.log(`✅ Proxy ${i+1} funcionó`);
+                    return data;
+                } catch (e) {
+                    console.log(`❌ Proxy ${i+1} falló, probando siguiente...`);
+                    // Continúa al siguiente proxy
+                }
+            }
+            alert('Todos los proxies fallaron. Probá con WiFi, desactivá bloqueador de anuncios o intentá más tarde.');
+            return null;
+        }
+
+        function crearFila(prod) {
+            const vendidos = prod.sold_quantity || 'N/A';
+            const precio = prod.price ? `\[ {prod.price}` : 'N/A';
+            return `
+                <tr onclick="window.open('${prod.permalink}', '_blank')">
+                    <td>${prod.title.substring(0, 60)}</td>
+                    <td>${precio}</td>
+                    <td>${vendidos}</td>
+                    <td><button class="btn btn-sm btn-outline-light">Abrir</button></td>
+                </tr>`;
+        }
+
+        async function buscarProductos() {
+            const query = document.getElementById('buscar-input').value.trim();
+            if (!query) return alert('Escribí algo para buscar');
+            const data = await fetchMLA(`/sites/MLA/search?q=${encodeURIComponent(query)}&limit=15`);
+            if (!data) return;
+            const tbody = document.querySelector('#tabla-buscar tbody');
+            tbody.innerHTML = data.results.map(crearFila).join('');
+        }
+
+        async function verVolumenes() {
+            const query = document.getElementById('volumen-input').value.trim();
+            if (!query) return alert('Escribí algo para buscar');
+            const data = await fetchMLA(`/sites/MLA/search?q=${encodeURIComponent(query)}&limit=30`);
+            if (!data) return;
+            let resultados = data.results.map(p => ({
+                title: p.title.substring(0, 60),
+                vendidos: p.sold_quantity || 0,
+                price: p.price || 0,
+                permalink: p.permalink
+            }));
+            resultados.sort((a,b) => b.vendidos - a.vendidos);
+            const tbody = document.querySelector('#tabla-volumen tbody');
+            tbody.innerHTML = resultados.slice(0,15).map(p => `
+                <tr onclick="window.open('${p.permalink}', '_blank')">
+                    <td>${p.title}</td>
+                    <td>${p.vendidos}</td>
+                    <td> \]{p.price}</td>
+                    <td><button class="btn btn-sm btn-outline-light">Abrir</button></td>
+                </tr>`).join('');
+        }
+
+        async function validarProducto() {
+            let id = document.getElementById('id-input').value.trim();
+            if (!id.startsWith('MLA')) return alert('El ID debe empezar con MLA');
+            const data = await fetchMLA(`/items/${id}`);
+            if (!data) return;
+            const html = `
+                <h6>${data.title}</h6>
+                <p><strong>Precio:</strong> $${data.price}<br>
+                   <strong>Vendidos:</strong> ${data.sold_quantity
