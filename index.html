@@ -3,267 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArgDropAI - Dropshipping Argentina 2026</title>
+    <title>ArgDropAI Ultra - Omnicanal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        body { background: #1e1e2e; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .nav-link { color: #00ff9d !important; transition: 0.3s; }
-        .nav-link:hover { color: #ffffff !important; }
-        .nav-link.active { background: #00ff9d !important; color: #1e1e2e !important; font-weight: bold; border-radius: 8px 8px 0 0; }
-        .table { --bs-table-bg: #2a2a3d; color: white; border-color: #444; }
-        .card { background: #2a2a3d; border: 1px solid #3f3f5a; border-radius: 12px; }
-        .btn-success { background-color: #00ff9d; color: #1e1e2e; border: none; font-weight: bold; }
-        .btn-success:hover { background-color: #00cc7e; color: #1e1e2e; }
-        .form-control { background: #1e1e2e; color: white; border: 1px solid #00ff9d; }
-        .form-control:focus { background: #252538; color: white; box-shadow: 0 0 10px rgba(0,255,157,0.2); border-color: #00ff9d; }
-        .badge-hot { background-color: #ff4757; color: white; }
-        tr { cursor: pointer; transition: background 0.2s; }
-        tr:hover { background-color: #383852 !important; }
-        pre { border-radius: 8px; font-size: 0.9rem; }
+        :root { --neon: #00ff9d; --dark-bg: #0f0f1a; --card-bg: #1e1e2e; }
+        body { background: var(--dark-bg); color: #e0e0e0; font-family: 'Inter', sans-serif; }
+        .card { background: var(--card-bg); border: 1px solid #333; border-radius: 15px; overflow: hidden; }
+        .nav-pills .nav-link { color: #aaa; border-radius: 10px; margin: 0 5px; }
+        .nav-pills .nav-link.active { background: var(--neon); color: #000; font-weight: bold; }
+        .btn-social { transition: 0.3s; border: 1px solid #444; color: white; margin-bottom: 10px; width: 100%; text-align: left; }
+        .btn-social:hover { transform: translateY(-3px); border-color: var(--neon); color: var(--neon); }
+        .platform-icon { font-size: 1.5rem; margin-right: 10px; }
+        .status-bar { font-size: 0.75rem; background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 20px; color: var(--neon); }
+        .table-dark { --bs-table-bg: transparent; }
+        .trend-badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; background: #333; color: var(--neon); }
     </style>
 </head>
-<body class="p-3">
-    <div class="container">
-        <header class="text-center mb-4">
-            <h1 class="display-4 fw-bold text-success">ArgDropAI</h1>
-            <p class="text-muted">🚀 Versión Optimizada 2026 • Multi-Proxy • Mercado Libre Argentina</p>
-        </header>
+<body class="py-4">
 
-        <ul class="nav nav-tabs mb-4 border-0" id="myTab" role="tablist">
-            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#home">🏠 Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#buscar">🔎 Buscar</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#volumen">📊 Volúmenes</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#validar">✅ Validar</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#mercado">🇦🇷 Mercado</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#proveedores">🛒 Proveedores</a></li>
-        </ul>
-
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="home">
-                <div class="card p-5 text-center">
-                    <h2 class="text-success">¡Sistema de Agentes Activo!</h2>
-                    <p class="lead">Herramienta profesional para encontrar productos ganadores en el mercado argentino.</p>
-                    <div class="row mt-4">
-                        <div class="col-md-4 mb-3"><div class="p-3 border rounded">📡 4 Proxies Activos</div></div>
-                        <div class="col-md-4 mb-3"><div class="p-3 border rounded">⚡ API MLA 2026</div></div>
-                        <div class="col-md-4 mb-3"><div class="p-3 border rounded">🔍 Análisis de Tendencias</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="buscar">
-                <h5 class="mb-3">🔎 Agente Buscador de Productos</h5>
-                <div class="input-group mb-3">
-                    <input type="text" id="buscar-input" class="form-control" placeholder="Ej: smartwatch amoled">
-                    <button class="btn btn-success" onclick="buscarProductos()">Buscar en MLA</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="table" id="tabla-buscar">
-                        <thead><tr><th>Producto</th><th>Precio</th><th>Ventas aprox.</th><th>Link</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="volumen">
-                <h5 class="mb-3">📊 Agente Volúmenes de Ventas (Top Ganadores)</h5>
-                <div class="input-group mb-3">
-                    <input type="text" id="volumen-input" class="form-control" placeholder="Ej: masajeador">
-                    <button class="btn btn-success" onclick="verVolumenes()">Analizar Volúmenes</button>
-                </div>
-                <table class="table" id="tabla-volumen">
-                    <thead><tr><th>Producto</th><th>Vendidos</th><th>Precio</th><th>Calificación</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-            <div class="tab-pane fade" id="validar">
-                <h5 class="mb-3">✅ Agente Validador de Producto</h5>
-                <div class="input-group mb-3">
-                    <input type="text" id="id-input" class="form-control" placeholder="MLA123456789">
-                    <button class="btn btn-success" onclick="validarProducto()">Analizar Item</button>
-                </div>
-                <div id="resultado-validar" class="card p-4 d-none">
-                    </div>
-            </div>
-
-            <div class="tab-pane fade" id="mercado">
-                <h5 class="mb-3">🇦🇷 Agente Analizador de Tendencias</h5>
-                <div class="input-group mb-3">
-                    <input type="text" id="mercado-input" class="form-control" placeholder="Ej: hogar">
-                    <button class="btn btn-success" onclick="analizarMercado()">Escanear Nicho</button>
-                </div>
-                <div id="loading-mercado" class="text-center d-none py-3">⏳ Analizando precios y competencia...</div>
-                <pre id="resultado-mercado" class="bg-dark p-3 text-success border border-success"></pre>
-            </div>
-
-            <div class="tab-pane fade" id="proveedores">
-                <h5 class="mb-3">🛒 Directorio de Proveedores / Importadores</h5>
-                <div class="row" id="lista-proveedores">
-                    </div>
-            </div>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="text-success fw-bold m-0" style="letter-spacing: -1px;">ArgDropAI <span class="text-white">ULTRA</span></h1>
+            <p class="text-muted small">Inteligencia de Mercado Omnicanal Argentina</p>
+        </div>
+        <div class="status-bar border border-success">
+            <i class="bi bi-cpu"></i> Agentes IA: Listos
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // --- MOTOR DE PROXIES ---
-        async function fetchMLA(endpoint) {
-            const fullUrl = 'https://api.mercadolibre.com' + endpoint;
-            const proxyBuilders = [
-                (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-                (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-                (url) => `https://thingproxy.freeboard.io/fetch/${url}`
-            ];
+    <div class="card p-4 mb-4 shadow-lg">
+        <label class="mb-2 fw-bold">Análisis de Producto Ganador (Global):</label>
+        <div class="input-group input-group-lg">
+            <input type="text" id="global-q" class="form-control bg-dark text-white border-secondary" placeholder="Ej: humidificador led">
+            <button class="btn btn-success" onclick="analizarOmnicanal()">
+                <i class="bi bi-lightning-charge-fill"></i> ESPÍAR PRODUCTO
+            </button>
+        </div>
+    </div>
 
-            for (let i = 0; i < proxyBuilders.length; i++) {
-                try {
-                    const proxyUrl = proxyBuilders[i](fullUrl);
-                    const res = await fetch(proxyUrl);
-                    if (!res.ok) throw new Error();
-                    const data = await res.json();
-                    console.log(`✅ Proxy ${i+1} conectado`);
-                    return data;
-                } catch (e) {
-                    console.log(`❌ Proxy ${i+1} falló...`);
-                }
-            }
-            alert('Error de conexión. Intentá de nuevo en unos segundos.');
-            return null;
-        }
-
-        // --- FUNCIONES CORE ---
-        async function buscarProductos() {
-            const query = document.getElementById('buscar-input').value.trim();
-            if (!query) return;
-            const data = await fetchMLA(`/sites/MLA/search?q=${encodeURIComponent(query)}&limit=15`);
-            if (!data) return;
-
-            const tbody = document.querySelector('#tabla-buscar tbody');
-            tbody.innerHTML = data.results.map(p => `
-                <tr onclick="window.open('${p.permalink}', '_blank')">
-                    <td>${p.title.substring(0, 50)}...</td>
-                    <td>$${p.price.toLocaleString('es-AR')}</td>
-                    <td><span class="badge bg-primary">${p.sold_quantity || '0'} sold</span></td>
-                    <td><button class="btn btn-sm btn-outline-success">Ver</button></td>
-                </tr>
-            `).join('');
-        }
-
-        async function verVolumenes() {
-            const query = document.getElementById('volumen-input').value.trim();
-            if (!query) return;
-            const data = await fetchMLA(`/sites/MLA/search?q=${encodeURIComponent(query)}&limit=50`);
-            if (!data) return;
-
-            const ganadores = data.results
-                .sort((a, b) => (b.sold_quantity || 0) - (a.sold_quantity || 0))
-                .slice(0, 15);
-
-            const tbody = document.querySelector('#tabla-volumen tbody');
-            tbody.innerHTML = ganadores.map(p => `
-                <tr onclick="window.open('${p.permalink}', '_blank')">
-                    <td>${p.title}</td>
-                    <td class="fw-bold text-warning">${p.sold_quantity || 0}</td>
-                    <td>$${p.price.toLocaleString('es-AR')}</td>
-                    <td>⭐ ${p.reviews?.rating_average || 'N/A'}</td>
-                </tr>
-            `).join('');
-        }
-
-        async function validarProducto() {
-            let id = document.getElementById('id-input').value.trim().toUpperCase();
-            if (!id.includes('MLA')) return alert('ID inválido');
-            
-            const card = document.getElementById('resultado-validar');
-            card.classList.remove('d-none');
-            card.innerHTML = "⌛ Analizando item...";
-
-            const data = await fetchMLA(`/items/${id}`);
-            if (!data) return;
-
-            card.innerHTML = `
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="${data.pictures[0].url}" class="img-fluid rounded" style="max-height: 200px">
-                    </div>
-                    <div class="col-md-8">
-                        <h3>${data.title}</h3>
-                        <p class="h4 text-success">$${data.price.toLocaleString('es-AR')}</p>
-                        <ul class="list-unstyled">
-                            <li>📊 <strong>Ventas:</strong> ${data.sold_quantity} unidades</li>
-                            <li>📦 <strong>Stock:</strong> ${data.available_quantity}</li>
-                            <li>📍 <strong>Ubicación:</strong> ${data.seller_address?.city?.name || 'Arg'}</li>
-                            <li>🛡️ <strong>Estado:</strong> ${data.status === 'active' ? '✅ Activo' : '❌ Inactivo'}</li>
-                        </ul>
-                        <a href="${data.permalink}" target="_blank" class="btn btn-success">Ver en Mercado Libre</a>
-                    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card p-3 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="m-0"><i class="bi bi-cart3 text-warning"></i> Datos Mercado Libre</h5>
+                    <span id="ml-count" class="badge bg-dark">0 items</span>
                 </div>
-            `;
-        }
-
-        async function analizarMercado() {
-            const query = document.getElementById('mercado-input').value.trim();
-            const resBox = document.getElementById('resultado-mercado');
-            const loading = document.getElementById('loading-mercado');
-            
-            if (!query) return;
-            loading.classList.remove('d-none');
-            resBox.innerHTML = "";
-
-            const data = await fetchMLA(`/sites/MLA/search?q=${encodeURIComponent(query)}&limit=50`);
-            loading.classList.add('d-none');
-            
-            if (!data) return;
-
-            const precios = data.results.map(p => p.price);
-            const promedio = precios.reduce((a, b) => a + b, 0) / precios.length;
-            const max = Math.max(...precios);
-            const min = Math.min(...precios);
-            const totalVentas = data.results.reduce((a, b) => a + (b.sold_quantity || 0), 0);
-
-            resBox.innerHTML = `
---- INFORME DE MERCADO ARGENTINA 2026 ---
-Nicho: ${query.toUpperCase()}
-Muestra analizada: 50 productos activos.
-
-- Precio Promedio: $${promedio.toFixed(2)}
-- Precio Máximo:   $${max}
-- Precio Mínimo:   $${min}
-- Volumen de Ventas Total (Muestra): ${totalVentas} unidades
-
-CONSEJO DROPSHIPPING:
-${totalVentas > 500 ? "🔥 Nicho de ALTA DEMANDA. Compite por precio o velocidad." : "⚖️ Nicho Moderado. Busca diferenciación."}
------------------------------------------`;
-        }
-
-        // --- DATA DE PROVEEDORES ---
-        const proveedores = [
-            { nombre: "NetPoint Argentina", cat: "Electrónica", web: "https://netpoint.com.ar" },
-            { nombre: "Mayorista Once", cat: "Varios", web: "https://mayoristaonce.com" },
-            { nombre: "Grupo Tecno", cat: "Accesorios", web: "https://grupotecno.com.ar" },
-            { nombre: "Punto Digital", cat: "Cómputo", web: "https://puntodigital.com.ar" }
-        ];
-
-        function cargarProveedores() {
-            const container = document.getElementById('lista-proveedores');
-            container.innerHTML = proveedores.map(p => `
-                <div class="col-md-6 mb-3">
-                    <div class="card p-3 h-100">
-                        <h5>${p.nombre}</h5>
-                        <p class="text-success small">${p.cat}</p>
-                        <a href="${p.web}" target="_blank" class="btn btn-sm btn-outline-light">Contactar</a>
-                    </div>
+                <div id="ml-loading" class="text-center d-none py-4">
+                    <div class="spinner-border text-success"></div>
                 </div>
-            `).join('');
-        }
+                <div class="table-responsive" style="max-height: 500px;">
+                    <table class="table table-dark table-hover">
+                        <thead class="sticky-top bg-dark">
+                            <tr>
+                                <th>Item</th>
+                                <th>Precio</th>
+                                <th>Ventas</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ml-results">
+                            <tr><td colspan="4" class="text-center text-muted">Ingresa un producto para iniciar el escaneo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        // Init
-        window.onload = cargarProveedores;
-    </script>
+        <div class="col-lg-4">
+            <div class="card p-3 mb-4">
+                <h5 class="mb-3"><i class="bi bi-share text-info"></i> Validar en Redes</h5>
+                <p class="small text-muted">Pulsa para ver qué tan viral es el producto:</p>
+                
+                <button class="btn btn-social" onclick="openSocial('tiktok')">
+                    <i class="bi bi-tiktok platform-icon"></i>
+                    <span><strong>TikTok</strong> <br><small>Ver "TikTok Made Me Buy It"</small></span>
+                </button>
+
+                <button class="btn btn-social" onclick="openSocial('fb')">
+                    <i class="bi bi-facebook platform-icon text-primary"></i>
+                    <span><strong>FB Library</strong> <br><small>Ver anuncios activos (Arg)</small></span>
+                </button>
+
+                <button class="btn btn-social" onclick="openSocial('ig')">
+                    <i class="bi bi-instagram platform-icon text-danger"></i>
+                    <span><strong>Instagram</strong> <br><small>Explorar Reels y Tendencias</small></span>
+                </button>
+
+                <button class="btn btn-social" onclick="openSocial('google')">
+                    <i class="bi bi-graph-up-arrow platform-icon text-success"></i>
+                    <span><strong>Google Trends</strong> <br><small>Interés de búsqueda en Argentina</small></span>
+                </button>
+            </div>
+
+            <div class="card p-3 bg-dark border-success">
+                <h6 class="text-success"><i class="bi bi-robot"></i> Recomendación IA:</h6>
+                <div id="ai-advice" class="small italic text-muted">
+                    Esperando datos de búsqueda para analizar rentabilidad...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const PROXY = "https://api.allorigins.win/get?url=";
+
+    async function analizarOmnicanal() {
+        const query = document.getElementById('global-q').value.trim();
+        if(!query) return;
+
+        // 1. Reset y UI
+        document.getElementById('ml-loading').classList.remove('d-none');
+        document.getElementById('ml-results').innerHTML = "";
+        document.getElementById('ai-advice').innerHTML = "Analizando competencia y viralidad...";
+
+        // 2. Fetch Mercado Libre (Data Real)
+        const mlData = await fetchML(query);
+        document.getElementById('ml-loading').classList.add('d-none');
+
+        if(mlData && mlData.results.length > 0) {
+            renderML(mlData.results);
+            generateAIAdvice(mlData.results, query);
+        }
+    }
+
+    async function fetchML(q) {
+        const url = encodeURIComponent(`https://api.mercadolibre.com/sites/MLA/search?q=${q}&limit=20`);
+        try {
+            const res = await fetch(PROXY + url);
+            const json = await res.json();
+            return JSON.parse(json.contents);
+        } catch (e) { return null; }
+    }
+
+    function renderML(items) {
+        const tbody = document.getElementById('ml-results');
+        document.getElementById('ml-count').innerText = `${items.length} items`;
+        
+        tbody.innerHTML = items.map(item => `
+            <tr onclick="window.open('${item.permalink}', '_blank')">
+                <td><small>${item.title.substring(0, 35)}...</small></td>
+                <td class="text-success fw-bold">$${item.price.toLocaleString()}</td>
+                <td>${item.sold_quantity || '0'}</td>
+                <td><span class="trend-badge">${item.accepts_mercadopago ? '🔥 TOP' : 'N/A'}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    function openSocial(platform) {
+        const q = document.getElementById('global-q').value.trim();
+        if(!q) return alert("Primero ingresa un producto");
+
+        const queries = {
+            tiktok: `https://www.tiktok.com/search?q=${encodeURIComponent(q + " argentina")}`,
+            fb: `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=AR&q=${encodeURIComponent(q)}&sort_data[direction]=desc&sort_data[mode]=relevancy_monthly_grouped`,
+            ig: `https://www.instagram.com/explore/tags/${q.replace(/\s+/g, '')}/`,
+            google: `https://trends.google.com/trends/explore?date=now%207-d&geo=AR&q=${encodeURIComponent(q)}`
+        };
+
+        window.open(queries[platform], '_blank');
+    }
+
+    function generateAIAdvice(items, q) {
+        const totalSales = items.reduce((acc, curr) => acc + (curr.sold_quantity || 0), 0);
+        const avgPrice = items.reduce((acc, curr) => acc + curr.price, 0) / items.length;
+        
+        let advice = "";
+        if(totalSales > 200) {
+            advice = `EL PRODUCTO ES TREND: Se detectan más de ${totalSales} ventas recientes. Alta saturación pero alta demanda. Busca proveedores locales en Once para margen rápido.`;
+        } else {
+            advice = `PRODUCTO NICHO: Pocas ventas en ML, ideal para testear con TikTok Ads si el contenido es visual. El precio sugerido es $${(avgPrice * 1.2).toFixed(0)}.`;
+        }
+        document.getElementById('ai-advice').innerHTML = advice;
+    }
+</script>
+
 </body>
 </html>
-            const html = `
-                <h6>${data.title}</h6>
-                <p><strong>Precio:</strong> $${data.price}<br>
-                   <strong>Vendidos:</strong> ${data.sold_quantity
