@@ -3,211 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArgDropAI - Pipeline de Rentabilidad 2026</title>
+    <title>ArgDropAI - FIX DEPURADO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        :root { --accent: #00ff9d; --bg: #0a0a0f; --card: #161625; }
-        body { background: var(--bg); color: #e0e0e0; font-family: 'Segoe UI', system-ui, -apple-system; }
-        .step-card { background: var(--card); border: 1px solid #2d2d3f; border-radius: 16px; transition: 0.3s; opacity: 0.5; pointer-events: none; }
-        .step-active { opacity: 1; pointer-events: all; border-color: var(--accent); box-shadow: 0 0 20px rgba(0, 255, 157, 0.1); }
-        .btn-accent { background: var(--accent); color: #000; font-weight: bold; border-radius: 8px; }
-        .btn-accent:hover { background: #00cc7e; }
-        .table { color: #fff; --bs-table-bg: transparent; }
-        .status-pill { font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; background: #2d2d3f; border: 1px solid #444; }
-        .profit-text { color: var(--accent); font-weight: bold; font-size: 1.2rem; }
-        .loader { width: 20px; height: 20px; border: 3px solid #FFF; border-bottom-color: transparent; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
-        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        :root { --neon: #00ff9d; --bg: #0d0d12; }
+        body { background: var(--bg); color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }
+        .step-card { background: #1a1a24; border: 1px solid #333; border-radius: 12px; margin-bottom: 20px; padding: 20px; transition: 0.3s; }
+        .step-active { border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 255, 157, 0.1); }
+        .btn-main { background: var(--neon); color: #000; font-weight: bold; border: none; }
+        .btn-main:hover { background: #00cc7e; }
+        .console { background: #000; color: #00ff00; font-family: monospace; font-size: 0.8rem; padding: 10px; border-radius: 5px; max-height: 100px; overflow-y: auto; margin-top: 10px; }
+        .table { color: white; }
+        .profit-box { background: #000; border: 1px dashed var(--neon); padding: 15px; text-align: center; border-radius: 10px; }
     </style>
 </head>
-<body class="py-5">
+<body class="container py-4">
 
-<div class="container">
-    <header class="text-center mb-5">
-        <h1 class="text-success fw-bold">ArgDropAI <span class="text-white">PRO</span></h1>
-        <p class="text-muted">Analizador de Arbitraje y Márgenes Argentina</p>
+    <header class="text-center mb-4">
+        <h1 style="color: var(--neon)">ArgDropAI <span class="text-white">PRO FIX</span></h1>
+        <p class="text-muted">Si no carga, revisa la "Consola de Agente" abajo.</p>
     </header>
 
-    <div class="step-card step-active p-4 mb-4" id="step-1">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5><span class="badge bg-success me-2">1</span> Búsqueda de Productos Rentables</h5>
-            <span class="status-pill text-success">Online</span>
+    <div class="step-card step-active" id="step1">
+        <h5>1. Búsqueda de Productos Ganadores</h5>
+        <div class="input-group">
+            <input type="text" id="query" class="form-control bg-dark text-white border-secondary" placeholder="Ej: smartwatch">
+            <button class="btn btn-main" onclick="buscarTop10()">BUSCAR TOP 10</button>
         </div>
-        <div class="input-group mb-4">
-            <input type="text" id="main-q" class="form-control bg-dark text-white border-secondary" placeholder="Ej: Cepillo secador de pelo">
-            <button class="btn btn-accent" onclick="searchTop10()"><i class="bi bi-search"></i> Buscar Top 10</button>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover">
+        <div id="log-1" class="console">Esperando instrucción...</div>
+        
+        <div class="table-responsive mt-3">
+            <table class="table table-hover d-none" id="tabla-resultados">
                 <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio Promedio</th>
-                        <th>Ventas Est.</th>
-                        <th>Acción</th>
-                    </tr>
+                    <tr><th>Producto</th><th>Precio</th><th>Ventas</th><th>Análisis</th></tr>
                 </thead>
-                <tbody id="top10-results"></tbody>
+                <tbody id="lista-productos"></tbody>
             </table>
         </div>
     </div>
 
-    <div class="step-card p-4 mb-4" id="step-2">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5><span class="badge bg-secondary me-2">2</span> Análisis de Mercado Local (Marketplace/FB/ML)</h5>
-            <div id="loader-2" class="d-none"><span class="loader"></span></div>
-        </div>
-        <div id="market-analysis-content" class="row d-none">
+    <div class="step-card" id="step2" style="opacity: 0.5;">
+        <h5>2. Análisis de Mercado y Proveedores</h5>
+        <div id="analisis-status">Selecciona un producto arriba para analizar.</div>
+        
+        <div class="row mt-3 g-3 d-none" id="calc-container">
             <div class="col-md-6">
-                <div class="p-3 border border-secondary rounded mb-3">
-                    <p class="mb-1 text-muted">Demanda en Argentina:</p>
-                    <h4 id="demand-level" class="text-white">---</h4>
-                    <div class="progress bg-dark" style="height: 10px;">
-                        <div id="demand-bar" class="progress-bar bg-success" style="width: 0%"></div>
-                    </div>
+                <div class="p-3 border rounded">
+                    <h6>Proveedores (Envío 24/48hs)</h6>
+                    <ul id="prov-list" class="small"></ul>
                 </div>
             </div>
-            <div class="col-md-6 text-center">
-                <button class="btn btn-outline-info w-100 mb-2" onclick="openContextSearch('fb')">Ver Competencia FB</button>
-                <button class="btn btn-outline-info w-100" onclick="findSuppliers()">Validar Proveedores (24-48hs)</button>
+            <div class="col-md-6">
+                <div class="profit-box">
+                    <p class="mb-1 small">Margen Neto Estimado</p>
+                    <h2 id="final-profit" style="color: var(--neon)">$0</h2>
+                    <p class="mb-0 small text-muted">Precio Venta Sugerido: <span id="suggested-p" class="text-white">$0</span></p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="step-card p-4 mb-4" id="step-3">
-        <h5><span class="badge bg-secondary me-2">3</span> Sourcing: Proveedores Verificados</h5>
-        <div class="row mt-3" id="supplier-list">
-            </div>
-    </div>
+    <script>
+        // TRUCO TÉCNICO: Usamos un proxy que no requiere JSON.parse extra si falla el primero
+        const PROXY_URL = "https://api.allorigins.win/get?url=";
 
-    <div class="step-card p-4 mb-4" id="step-4">
-        <h5><span class="badge bg-secondary me-2">4</span> Escandallo de Costos y Precio Final</h5>
-        <div class="row g-3 mt-2">
-            <div class="col-md-3">
-                <label class="small text-muted">Costo Producto (ARS)</label>
-                <input type="number" id="cost-in" class="form-control bg-dark text-white" oninput="calculateProfit()">
-            </div>
-            <div class="col-md-3">
-                <label class="small text-muted">Costo Envío (Flash)</label>
-                <input type="number" id="ship-in" class="form-control bg-dark text-white" value="4500" oninput="calculateProfit()">
-            </div>
-            <div class="col-md-3">
-                <label class="small text-muted">Comisión Plataforma %</label>
-                <input type="number" id="fee-in" class="form-control bg-dark text-white" value="15" oninput="calculateProfit()">
-            </div>
-            <div class="col-md-3">
-                <label class="small text-muted">Publicidad (CPA)</label>
-                <input type="number" id="ads-in" class="form-control bg-dark text-white" value="2000" oninput="calculateProfit()">
-            </div>
-        </div>
-        <div class="mt-4 p-3 bg-black rounded text-center">
-            <p class="mb-0">Precio Sugerido de Venta:</p>
-            <h2 id="suggested-price" class="text-success">$0.00</h2>
-            <p class="mb-0 mt-2">Margen Neto Estimado: <span id="net-profit" class="profit-text">$0.00</span></p>
-        </div>
-    </div>
-</div>
+        function logger(id, msg) {
+            const el = document.getElementById(id);
+            el.innerText = `> ${new Date().toLocaleTimeString()}: ${msg}`;
+            el.scrollTop = el.scrollHeight;
+        }
 
-<script>
-    const PROXY = "https://api.allorigins.win/get?url=";
-    let selectedProduct = { name: "", price: 0 };
+        async function buscarTop10() {
+            const q = document.getElementById('query').value;
+            if (!q) return alert("Escribe un producto");
 
-    // --- PASO 1: TOP 10 RENTABLES ---
-    async function searchTop10() {
-        const q = document.getElementById('main-q').value;
-        if(!q) return;
-        
-        const url = encodeURIComponent(`https://api.mercadolibre.com/sites/MLA/search?q=${q}&sort=relevance&limit=10`);
-        const res = await fetch(PROXY + url);
-        const data = JSON.parse((await res.json()).contents);
-        
-        const tbody = document.getElementById('top10-results');
-        tbody.innerHTML = data.results.map((item, index) => `
-            <tr>
-                <td>${item.title.substring(0, 40)}...</td>
-                <td>$${item.price.toLocaleString()}</td>
-                <td>${item.sold_quantity || Math.floor(Math.random()*50)+10}+</td>
-                <td><button class="btn btn-sm btn-success" onclick="selectProduct('${item.title}', ${item.price}, ${index})">Analizar</button></td>
-            </tr>
-        `).join('');
-    }
+            logger('log-1', `Iniciando búsqueda de "${q}"...`);
+            document.getElementById('tabla-resultados').classList.add('d-none');
 
-    // --- PASO 2: ANALIZAR MERCADO ARGENTINO ---
-    function selectProduct(name, price, id) {
-        selectedProduct = { name, price };
-        
-        // Activar siguiente paso
-        document.getElementById('step-2').classList.add('step-active');
-        document.getElementById('loader-2').classList.remove('d-none');
-        document.getElementById('market-analysis-content').classList.remove('d-none');
-
-        setTimeout(() => {
-            document.getElementById('loader-2').classList.add('d-none');
-            document.getElementById('demand-level').innerText = "ALTA (Venta Diaria)";
-            document.getElementById('demand-bar').style.width = "85%";
+            // Endpoint de Mercado Libre Argentina (MLA)
+            const target = `https://api.mercadolibre.com/sites/MLA/search?q=${encodeURIComponent(q)}&limit=10`;
             
-            // Auto-llenado en calculadora
-            document.getElementById('cost-in').value = Math.floor(price * 0.4); // Estimación 40%
-            calculateProfit();
-        }, 1500);
-    }
+            try {
+                const response = await fetch(PROXY_URL + encodeURIComponent(target));
+                if (!response.ok) throw new Error("Error de red");
+                
+                const dataRaw = await response.json();
+                const data = JSON.parse(dataRaw.contents); // AllOrigins empaqueta el JSON aquí
 
-    function openContextSearch(type) {
-        const q = selectedProduct.name;
-        const urls = {
-            fb: `https://www.facebook.com/marketplace/buenosaires/search?query=${encodeURIComponent(q)}`
-        };
-        window.open(urls[type], '_blank');
-    }
+                if (!data.results || data.results.length === 0) {
+                    logger('log-1', "No se encontraron productos.");
+                    return;
+                }
 
-    // --- PASO 3: BUSCAR PROVEEDORES (LOGICA DE REPUTACIÓN) ---
-    function findSuppliers() {
-        document.getElementById('step-3').classList.add('step-active');
-        const list = document.getElementById('supplier-list');
-        
-        // Simulación de scraping de proveedores de alta reputación (Once/Importadores)
-        const provs = [
-            {n: "Importadora Centro", r: "98% Positiva", t: "24hs", u: "CABA"},
-            {n: "Distribuidora Flash", r: "95% Positiva", t: "48hs", u: "Bs.As. Norte"},
-            {n: "Logística Mayorista", r: "100% Positiva", t: "24hs", u: "Santa Fe (Ctro)"}
-        ];
+                logger('log-1', "Conexión exitosa. Procesando top 10...");
+                const lista = document.getElementById('lista-productos');
+                lista.innerHTML = "";
 
-        list.innerHTML = provs.map(p => `
-            <div class="col-md-4 mb-2">
-                <div class="p-3 border border-dark rounded bg-dark">
-                    <h6>${p.n}</h6>
-                    <div class="small">⭐ ${p.r}</div>
-                    <div class="small text-success">🚚 Despacho: ${p.t}</div>
-                    <div class="small text-muted">📍 Ubicación: ${p.u}</div>
-                </div>
-            </div>
-        `).join('');
-        
-        document.getElementById('step-4').classList.add('step-active');
-    }
+                data.results.forEach(item => {
+                    lista.innerHTML += `
+                        <tr>
+                            <td class="small">${item.title.substring(0, 30)}...</td>
+                            <td class="text-success">$${item.price.toLocaleString()}</td>
+                            <td>${item.sold_quantity || '10+'}</td>
+                            <td><button class="btn btn-sm btn-outline-light" onclick="analizarGanador('${item.title}', ${item.price})">Elegir</button></td>
+                        </tr>
+                    `;
+                });
 
-    // --- PASO 4: CALCULADORA DE MÁRGENES ---
-    function calculateProfit() {
-        const cost = parseFloat(document.getElementById('cost-in').value) || 0;
-        const shipping = parseFloat(document.getElementById('ship-in').value) || 0;
-        const feePercent = parseFloat(document.getElementById('fee-in').value) || 0;
-        const ads = parseFloat(document.getElementById('ads-in').value) || 0;
+                document.getElementById('tabla-resultados').classList.remove('d-none');
+            } catch (err) {
+                logger('log-1', "ERROR: El proxy está saturado. Intenta de nuevo.");
+                console.error(err);
+            }
+        }
 
-        // Estrategia: Margen del 30% neto sobre el costo total
-        const totalExpenses = cost + shipping + ads;
-        const suggestedSale = totalExpenses * 1.6; // Multiplicador base para cubrir comisiones
-        
-        const platformFee = suggestedSale * (feePercent / 100);
-        const netProfit = suggestedSale - totalExpenses - platformFee;
+        function analizarGanador(titulo, precio) {
+            // Activar paso 2
+            const s2 = document.getElementById('step2');
+            s2.style.opacity = "1";
+            document.getElementById('analisis-status').innerHTML = `Analizando: <strong>${titulo}</strong>`;
+            document.getElementById('calc-container').classList.remove('d-none');
 
-        document.getElementById('suggested-price').innerText = `$${suggestedSale.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-        document.getElementById('net-profit').innerText = `$${netProfit.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-        
-        if(netProfit < 0) document.getElementById('net-profit').classList.replace('text-success', 'text-danger');
-        else document.getElementById('net-profit').classList.replace('text-danger', 'text-success');
-    }
-</script>
+            // Simulación de búsqueda de proveedores con despacho en 24/48hs
+            const proveedores = [
+                {n: "Mayorista Once Import", r: "Excelente", d: "24hs"},
+                {n: "Distribuidora Sur", r: "Muy Buena", d: "48hs"}
+            ];
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            const pList = document.getElementById('prov-list');
+            pList.innerHTML = proveedores.map(p => `<li><strong>${p.n}</strong>: Reputación ${p.r} (Despacho ${p.d})</li>`).join('');
+
+            // CÁLCULO DE COSTOS Y MÁRGENES
+            // Lógica: Costo (45%) + Envío ($4500) + Publicidad ($3000) + Comisión (15%)
+            const costoProd = precio * 0.45;
+            const costoEnvio = 4500;
+            const costoAds = 3000;
+            const comision = precio * 0.15;
+            
+            const precioVentaSugerido = precio * 1.1; // Un 10% más que el promedio para ser rentable
+            const margenNeto = precioVentaSugerido - (costoProd + costoEnvio + costoAds + comision);
+
+            document.getElementById('suggested-p').innerText = `$${precioVentaSugerido.toLocaleString(undefined, {maximumFractionDigits:0})}`;
+            document.getElementById('final-profit').innerText = `$${margenNeto.toLocaleString(undefined, {maximumFractionDigits:0})}`;
+            document.getElementById('final-profit').style.color = margenNeto > 0 ? "#00ff9d" : "#ff4d4d";
+        }
+    </script>
 </body>
 </html>
